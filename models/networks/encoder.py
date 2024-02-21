@@ -93,7 +93,7 @@ class StyleGAN2ResnetEncoder(BaseNetwork):
     def forward(self, x, extract_features=False):
         x = self.FromRGB(x)
         midpoint = self.DownToSpatialCode(x)
-        sp = self.ToSpatialCode(midpoint)
+        sp = self.ToSpatialCode(midpoint) # ConvLayer 2개만 있는 거 봐서 structure인 듯
 
         if extract_features:
             padded_midpoint = F.pad(midpoint, (1, 0, 1, 0), mode='reflect')
@@ -105,7 +105,7 @@ class StyleGAN2ResnetEncoder(BaseNetwork):
 
         x = self.DownToGlobalCode(midpoint)
         x = x.mean(dim=(2, 3))
-        gl = self.ToGlobalCode(x)
+        gl = self.ToGlobalCode(x) # F.linear 있는 거 봐서 texture인 듯
         sp = util.normalize(sp)
         gl = util.normalize(gl)
         if extract_features:
